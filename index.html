@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nutrio Meals | تطبيق العميل</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
+<style>
+:root{--ink:#173327;--olive:#6e7a25;--sage:#949b50;--cream:#fbfaf3;--card:#ffffff;--line:#e4dfcc;--soft:#ecebd6;--mute:#5d6a60;--on-ink:#f6f3e9;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#f6f3e9;--olive:#b4bf5a;--sage:#949b50;--cream:#10231a;--card:#173327;--line:#2b4a3a;--soft:#1f3d2e;--mute:#a9b8ac;--on-ink:#10231a}}
+:root[data-theme="dark"]{--ink:#f6f3e9;--olive:#b4bf5a;--sage:#949b50;--cream:#10231a;--card:#173327;--line:#2b4a3a;--soft:#1f3d2e;--mute:#a9b8ac;--on-ink:#10231a}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--cream);color:var(--ink);font-family:"Segoe UI Variable",Cairo,system-ui,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:84px}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 18px 6px}
+.logo{font-weight:800;font-size:24px;letter-spacing:-.5px;font-family:Cairo,sans-serif}
+.logo small{display:block;font-size:8px;letter-spacing:5px;color:var(--olive);font-weight:600;margin-top:-6px;text-align:center}
+.hi{font-size:13px;color:var(--mute);text-align:left}.hi b{display:block;color:var(--ink);font-size:15px}
+section{display:none;padding:8px 18px 20px}section.on{display:block}
+section.on>*{animation:up .55s cubic-bezier(.2,.8,.2,1) both}
+section.on>*:nth-child(2){animation-delay:.06s}section.on>*:nth-child(3){animation-delay:.12s}section.on>*:nth-child(4){animation-delay:.18s}section.on>*:nth-child(5){animation-delay:.24s}section.on>*:nth-child(6){animation-delay:.3s}section.on>*:nth-child(n+7){animation-delay:.36s}
+h2{font-size:20px;font-weight:800;margin:10px 0 4px}
+.sub{font-size:13px;color:var(--mute);margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:12px}
+.status{display:flex;gap:10px;align-items:center;background:var(--ink);color:var(--on-ink);border-radius:20px;padding:14px;margin-bottom:12px}
+.status .dot{width:10px;height:10px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 5px rgba(148,155,80,.3)}
+.status b{display:block;font-size:15px}.status span{font-size:12px;opacity:.8}
+.sum{display:flex;gap:14px;align-items:center}
+.ring{position:relative;width:104px;height:104px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring div{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-size:11px;color:var(--mute)}
+.ring div b{font-size:22px;color:var(--ink);line-height:1}
+.macros{flex:1;display:grid;gap:8px}
+.mac{font-size:12px}.mac div{display:flex;justify-content:space-between;margin-bottom:3px}
+.bar{height:6px;background:var(--soft);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--olive);border-radius:9px;transition:width .5s;animation:grow .9s cubic-bezier(.2,.8,.2,1) both}
+.row{display:flex;gap:10px}.row>.card{flex:1}
+.water{display:flex;gap:4px;margin:8px 0}.water i{width:14px;height:20px;border-radius:3px 3px 7px 7px;background:var(--soft)}.water i.f{background:var(--sage);transition:background .3s}.water i.n{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+.pill{display:inline-block;background:var(--ink);color:var(--on-ink);border-radius:30px;padding:8px 16px;font-weight:700;font-size:13px}
+.meal{display:flex;gap:12px;align-items:center;cursor:pointer}
+.thumb{width:62px;height:62px;border-radius:16px;background:var(--soft);display:grid;place-content:center;font-size:30px;flex:none}
+.meal h3{font-size:15px;font-weight:700}.meal p{font-size:12px;color:var(--mute)}
+.tag{font-size:11px;font-weight:700;color:var(--olive)}
+.logrow{display:none;margin-top:12px;border-top:1px dashed var(--line);padding-top:12px}.meal-wrap.open .logrow{display:block;animation:drop .3s ease both}
+.logrow p{font-size:13px;font-weight:600;margin-bottom:8px}
+.pcts{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.pcts button{padding:9px 0;border-radius:12px;border:1px solid var(--line);font-size:13px;font-weight:700}
+.pcts button.s{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.rate{display:flex;gap:8px;margin-top:10px}.rate button{flex:1;padding:9px;border-radius:12px;border:1px solid var(--line);font-size:13px}.rate button.s{background:var(--soft);border-color:var(--olive)}
+.cat{margin-bottom:16px}.cat h3{display:flex;justify-content:space-between;font-size:16px;margin-bottom:8px}
+.cat h3 span{font-size:12px;color:var(--mute);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.opt{position:relative;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:10px 4px 8px;text-align:center;font-size:12px;font-weight:600;line-height:1.3}
+.opt em{display:block;font-style:normal;font-size:26px;margin-bottom:4px}
+.opt.s{border-color:var(--olive);background:var(--soft)}
+.opt.s::after{content:"✓";position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;background:var(--olive);color:#fff;font-size:11px;display:grid;place-content:center}
+.link{font-size:12px;color:var(--olive);font-weight:700}
+.cta{width:100%;background:var(--ink);color:var(--on-ink);border-radius:16px;padding:15px;font-weight:800;font-size:15px;margin-top:6px}
+.cta:disabled{opacity:.4}
+.note{font-size:12px;color:var(--mute);text-align:center;margin-top:8px}
+.kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}.kv:last-child{border:0}.kv b{font-weight:700}
+.act{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);width:100%;font-size:14px;font-weight:600}.act:last-child{border:0}
+.chart{display:flex;align-items:flex-end;gap:6px;height:70px;margin-top:8px}.chart i{flex:1;background:var(--sage);border-radius:6px 6px 2px 2px}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--ink);display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));border-radius:22px 22px 0 0}
+nav button{flex:1;color:var(--on-ink);opacity:.6;font-size:11px;font-weight:600;display:grid;gap:2px;justify-items:center;padding:4px 0}
+nav button em{font-style:normal;font-size:20px}nav button.on{opacity:1}
+nav button.on em{background:var(--sage);border-radius:12px;padding:0 14px}
+#toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--on-ink);padding:10px 18px;border-radius:30px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.3s;z-index:9}
+#toast.on{opacity:1;transform:translateX(-50%)}
+@keyframes fade{from{opacity:0}}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes halo{0%{box-shadow:0 0 0 0 rgba(148,155,80,.5)}100%{box-shadow:0 0 0 34px rgba(148,155,80,0)}}
+.shake{animation:shake .45s}
+#dscrow.in{animation:drop .4s cubic-bezier(.2,.8,.2,1)}
+.pm:active{transform:scale(.97)}.pm.s .rd{animation:pop .3s cubic-bezier(.3,1.6,.5,1)}
+.cta.load:disabled{opacity:.9}.cta.load::before{content:"";display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;margin-inline-end:8px;vertical-align:-2px;animation:spin .7s linear infinite}
+.ck{stroke-dasharray:24;stroke-dashoffset:24}#done.on .ck{animation:draw .55s ease .5s forwards}
+#done.on .big{animation:pop .6s cubic-bezier(.3,1.6,.5,1) .15s both,halo 1.6s ease-out .7s 2}
+.cf{position:absolute;top:36%;left:50%;width:8px;height:12px;border-radius:2px;pointer-events:none}
+.codebox{display:flex;gap:8px;margin-bottom:8px}.codebox input{flex:1;min-width:0;border:1px solid var(--line);background:var(--cream);color:var(--ink);border-radius:12px;padding:11px 12px;font:inherit;font-size:14px;direction:ltr;text-align:right}.codebox button{padding:0 18px;border-radius:12px;background:var(--ink);color:var(--on-ink);font-weight:700;font-size:13px}
+.pm{display:flex;align-items:center;gap:12px;width:100%;padding:13px;border:1.5px solid var(--line);border-radius:14px;margin-bottom:8px;font-size:14px;font-weight:700;text-align:right;transition:border-color .25s,background .25s}.pm:last-child{margin:0}.pm .ic{width:44px;height:28px;border-radius:7px;background:var(--soft);display:grid;place-content:center;font-size:11px;font-weight:800;flex:none}.pm .rd{margin-inline-start:auto;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none}.pm.s{border-color:var(--olive);background:var(--soft)}.pm.s .rd{border-color:var(--olive);background:radial-gradient(var(--olive) 45%,transparent 50%)}
+.sw{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:right;font-size:14px;font-weight:700}.sw small{display:block;font-weight:400;color:var(--mute);font-size:12px}.sw i{width:46px;height:26px;border-radius:20px;background:var(--line);position:relative;transition:background .25s;flex:none}.sw i::after{content:"";position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s}.sw.on i{background:var(--olive)}.sw.on i::after{transform:translateX(-20px)}
+.total{font-size:18px;font-weight:800}
+#done{position:fixed;inset:0;background:var(--cream);z-index:20;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px}#done.on{display:flex;animation:fade .4s}.big{width:92px;height:92px;border-radius:50%;background:var(--ink);color:var(--on-ink);display:grid;place-content:center;font-size:44px;margin-bottom:20px;animation:pop .6s cubic-bezier(.3,1.6,.5,1) .15s both;box-shadow:0 0 0 14px rgba(148,155,80,.25)}#done .card{width:100%;max-width:380px;text-align:right;margin-top:18px}#done>*:not(.big):not(.cf){animation:up .6s cubic-bezier(.2,.8,.2,1) .3s both}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes drop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes grow{from{width:0}}
+@keyframes pop{from{transform:scale(.4);opacity:.3}to{transform:scale(1);opacity:1}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(148,155,80,.6)}100%{box-shadow:0 0 0 12px rgba(148,155,80,0)}}
+.status .dot{animation:pulse 1.8s ease-out infinite}
+.opt.s::after{animation:pop .3s cubic-bezier(.3,1.6,.5,1)}
+.opt,.pcts button,.rate button,.cta,.pill,.card.meal-wrap{transition:transform .15s,background .25s,border-color .25s,opacity .25s,color .25s}
+.opt:active,.pcts button:active,.rate button:active,.cta:active,.pill:active{transform:scale(.95)}
+nav button em{transition:background .3s,padding .3s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">nutrio<small>MEALS</small></div>
+  <div class="hi">مرحباً بك<b>أحمد</b></div>
+</header>
+
+<section id="home" class="on">
+  <div class="status"><div class="dot"></div><div><b>متوجه إليك</b><span>وجبة الغداء في الطريق</span></div></div>
+  <div class="card">
+    <div class="sum">
+      <div class="ring"><svg width="104" height="104" viewBox="0 0 104 104"><circle cx="52" cy="52" r="44" fill="none" stroke="var(--soft)" stroke-width="10"/><circle id="arc" cx="52" cy="52" r="44" fill="none" stroke="var(--olive)" stroke-width="10" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="276.5" style="transition:stroke-dashoffset .5s"/></svg><div><b id="kc">0</b>من 2100<br>سعرة</div></div>
+      <div class="macros" id="macros"></div>
+    </div>
+  </div>
+  <h2>وجبات اليوم</h2>
+  <p class="sub">اضغط على الوجبة لتسجيل كم أكلت منها</p>
+  <div id="meals"></div>
+  <div class="row">
+    <div class="card"><b style="font-size:14px">الماء</b><div class="water" id="water"></div><button class="pill" id="addw">+ كوب</button></div>
+    <div class="card"><b style="font-size:14px">الوزن الحالي</b><div style="font-size:26px;font-weight:800;margin:4px 0">78.4 <small style="font-size:12px;color:var(--mute)">كجم</small></div><span class="tag">▼ 0.8 عن الأسبوع الماضي</span><div class="chart"><i style="height:100%"></i><i style="height:92%"></i><i style="height:88%"></i><i style="height:80%"></i></div></div>
+  </div>
+  <div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><b>اشتراكك نشط</b><div class="sub" style="margin:0">متبقي 17 يوم خدمة</div></div><button class="link" data-go="sub">إدارة الاشتراك</button></div>
+</section>
+
+<section id="prefs">
+  <h2>وش تحب في وجباتك؟</h2>
+  <p class="sub">اختر اللي تفضله، وإحنا نرتب لك الباقي. التعديل متاح طول يوم الجمعة.</p>
+  <div id="cats"></div>
+  <button class="cta" id="savep">حفظ تفضيلاتي</button>
+  <p class="note">لو ما اخترت شي، نختار لك من كل الأصناف المناسبة لك</p>
+</section>
+
+<section id="track">
+  <h2>متابعتك الأسبوعية</h2>
+  <p class="sub">الصورة العامة أهم من يوم واحد</p>
+  <div class="card"><b>متوسط السعرات</b><div class="chart" style="height:90px" id="wk"></div><div class="sub" style="margin:8px 0 0">الأيام الفاضية بدون تسجيل</div></div>
+  <div class="card"><div class="kv"><span>وجبات نيوتريو المسجلة</span><b>14 من 18</b></div><div class="kv"><span>متوسط الماء</span><b>6 أكواب</b></div><div class="kv"><span>طعام من خارج نيوتريو</span><b>3 مرات</b></div></div>
+  <button class="cta" id="addout">+ أضف طعام من خارج نيوتريو</button>
+</section>
+
+<section id="sub">
+  <h2>اشتراكك</h2>
+  <div class="card"><div class="kv"><span>الخطة</span><b>Fresh الطازجة</b></div><div class="kv"><span>المدة</span><b>شهر واحد</b></div><div class="kv"><span>تاريخ البداية</span><b>20 يناير 2025</b></div><div class="kv"><span>الحالة</span><b style="color:var(--olive)">نشط</b></div></div>
+  <div class="card"><b>تجميد الاشتراك</b><p class="sub" style="margin:4px 0 10px">رصيدك 20 يوم خدمة. اطلب قبل 3 أيام على الأقل.</p><button class="cta" data-toast="تم تسجيل طلب التجميد">اطلب تجميد</button></div>
+  <div class="card"><button class="act" data-toast="الانتقال للخطة المبردة">تغيير نوع الخطة <span>‹</span></button><button class="act" data-toast="تم تفعيل التجديد التلقائي">تفعيل التجديد التلقائي <span>‹</span></button><button class="act" data-go="deliv">جدول التوصيل والعناوين <span>‹</span></button><button class="act" data-go="pay">اشتراك جديد وإتمام الدفع <span>‹</span></button></div>
+</section>
+
+<section id="deliv">
+  <h2>جدول التوصيل</h2>
+  <p class="sub">لكل وجبة عنوانها وفترتها</p>
+  <div class="card" id="dl"></div>
+  <button class="cta" data-go="sub">رجوع</button>
+</section>
+
+<section id="pay">
+  <h2>إتمام الدفع</h2>
+  <p class="sub">راجع اشتراكك واختر طريقة الدفع</p>
+  <div class="card"><div class="kv"><span>الخطة</span><b>Fresh الطازجة</b></div><div class="kv"><span>المدة</span><b>شهر واحد</b></div><div class="kv"><span>تاريخ البداية</span><b>20 يناير 2025</b></div><div class="kv"><span>التوصيل</span><b>حسب جدولك الأسبوعي</b></div></div>
+  <div class="card"><b style="font-size:14px;display:block;margin-bottom:8px">رمز الخصم</b><div class="codebox"><input id="code" placeholder="NUTRIO10" autocomplete="off"><button id="apply">تطبيق</button></div>
+   <div class="kv"><span>سعر الاشتراك</span><b>772 ر.س</b></div><div class="kv" id="dscrow" style="display:none"><span>الخصم (NUTRIO10)</span><b id="dsc" style="color:var(--olive)"></b></div><div class="kv"><span>الإجمالي</span><b class="total" id="tot"></b></div></div>
+  <div class="card"><b style="font-size:14px;display:block;margin-bottom:10px">طريقة الدفع</b>
+   <button class="pm s"><span class="ic">mada</span>مدى<span class="rd"></span></button>
+   <button class="pm"><span class="ic">VISA</span>Visa / Mastercard<span class="rd"></span></button>
+   <button class="pm"><span class="ic">Pay</span>Apple Pay<span class="rd"></span></button></div>
+  <div class="card"><button class="sw" id="ar"><span>التجديد التلقائي<small>متوقف إلا إذا فعّلته أنت</small></span><i></i></button></div>
+  <button class="cta" id="paybtn"></button>
+  <p class="note">جميع عمليات الدفع آمنة ومشفرة</p>
+</section>
+
+<section id="acc">
+  <h2>حسابي</h2>
+  <div class="card"><div class="kv"><span>رقم الجوال</span><b dir="ltr">+966 5X XXX XXXX</b></div><div class="kv"><span>الوزن المستهدف</span><b>75 كجم</b></div><div class="kv"><span>الهدف</span><b>خسارة الوزن</b></div></div>
+  <div class="card"><button class="act" data-toast="تحديث بيانات الجسم">تحديث بيانات الجسم <span>‹</span></button><button class="act" data-toast="تعديل الحساسية">الحساسية والمعلومات الغذائية <span>‹</span></button><button class="act" data-toast="إعدادات التواصل">إعدادات الإشعارات <span>‹</span></button><button class="act" data-toast="تم تسجيل الخروج">تسجيل الخروج <span>‹</span></button></div>
+</section>
+
+<nav id="nav">
+  <button class="on" data-go="home"><em>⌂</em>الرئيسية</button>
+  <button data-go="prefs"><em>🍽</em>الوجبات</button>
+  <button data-go="track"><em>▥</em>المتابعة</button>
+  <button data-go="sub"><em>▤</em>الاشتراك</button>
+  <button data-go="acc"><em>○</em>حسابي</button>
+</nav>
+<div id="done"><div class="big"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path class="ck" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h2>تم إنشاء اشتراكك بنجاح</h2><p class="sub">نراك في أول يوم من رحلتك</p><div class="card"><div class="kv"><span>الخطة</span><b>Fresh الطازجة</b></div><div class="kv"><span>المدة</span><b>شهر واحد</b></div><div class="kv"><span>تاريخ البداية</span><b>20 يناير 2025</b></div></div><button class="cta" id="gohome" style="max-width:380px;margin-top:16px">الذهاب إلى الرئيسية</button></div>
+<div id="toast"></div>
+
+<script>
+const T={kc:2100,p:150,c:250,f:70,fi:30};
+const meals=[
+ {t:'الفطور',n:'كريمة الأرز',e:'🥣',kc:320,p:18,c:52,f:6,fi:4,pct:100},
+ {t:'الغداء',n:'دجاج مشوي مع أرز مندي',e:'🍗',kc:620,p:45,c:70,f:18,fi:8,pct:0},
+ {t:'العشاء',n:'سمك فيليه مع بطاطس مشوية',e:'🐟',kc:480,p:38,c:40,f:20,fi:6,pct:0}
+];
+const cats=[
+ {k:'البروتينات',min:3,o:[['دجاج مشوي','🍗'],['دجاج ترياكي','🍗'],['دجاج فاهيتا','🌯'],['دجاج صوص كاري','🍛'],['دجاج باربكيو','🍖'],['دجاج مكسيكي','🌮'],['دايناميت شرمب','🍤'],['جمبري بالكريمة','🦐'],['سمك فيليه','🐟'],['لحم خضار','🥩']]},
+ {k:'الكربوهيدرات',min:2,o:[['أرز مندي','🍚'],['بطاطس مشوية','🥔'],['بطاطس مهروسة','🥔'],['مكرونة كريمة','🍝'],['مكرونة بالصويا','🍝']]},
+ {k:'الفطور',min:2,o:[['وافل','🧇'],['أوملت','🍳'],['كريمة الأرز','🥣'],['بانكيك','🥞'],['كورن فليكس','🥣']]}
+];
+const sel=cats.map(()=>new Set());
+let water=3;
+const $=s=>document.querySelector(s);
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1800)}
+function go(id){document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===id));document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===id||((id==='deliv'||id==='pay')&&b.dataset.go==='sub')));scrollTo(0,0)}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go);const m=e.target.closest('[data-toast]');if(m)toast(m.dataset.toast)});
+
+function countTo(el,v){const a=+el.textContent||0,t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/700);el.textContent=Math.round(a+(v-a)*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)}
+let pulse=false;
+function renderHome(){
+ const tot={kc:0,p:0,c:0,f:0,fi:0};
+ meals.forEach(m=>{for(const k in tot)tot[k]+=m[k]*m.pct/100});
+ countTo($('#kc'),Math.round(tot.kc));
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{$('#arc').style.strokeDashoffset=276.5*(1-Math.min(1,tot.kc/T.kc))}));
+ $('#macros').innerHTML=[['البروتين','p','ج'],['الكربوهيدرات','c','ج'],['الدهون','f','ج'],['الألياف','fi','ج']].map(([n,k,u])=>`<div class="mac"><div><span>${n}</span><span>${Math.round(tot[k])} / ${T[k]}${u}</span></div><div class="bar"><i style="width:${Math.min(100,tot[k]/T[k]*100)}%"></i></div></div>`).join('');
+ $('#water').innerHTML=Array.from({length:8},(_,i)=>`<i class="${i<water?'f':''}${pulse&&i===water-1?' n':''}"></i>`).join('');
+}
+function renderMeals(){
+ $('#meals').innerHTML=meals.map((m,i)=>`<div class="card meal-wrap" data-i="${i}"><div class="meal"><div class="thumb">${m.e}</div><div><span class="tag">${m.t}</span><h3>${m.n}</h3><p>${m.kc} سعرة · ${m.p} ج بروتين</p></div></div>
+ <div class="logrow"><p>كم أكلت منها؟</p><div class="pcts">${[0,25,50,75,100].map(v=>`<button data-v="${v}" class="${m.pct===v?'s':''}">${v}%</button>`).join('')}</div>
+ <div class="rate"><button data-r="1">أعجبتني 🙂</button><button data-r="0">لم تعجبني 🙁</button></div></div></div>`).join('');
+}
+$('#meals').addEventListener('click',e=>{
+ const w=e.target.closest('.meal-wrap');if(!w)return;const i=+w.dataset.i;
+ const b=e.target.closest('[data-v]');
+ if(b){meals[i].pct=+b.dataset.v;renderMeals();renderHome();document.querySelector(`[data-i="${i}"]`).classList.add('open');toast('تم تسجيل الوجبة');return}
+ const r=e.target.closest('[data-r]');
+ if(r){r.parentNode.querySelectorAll('button').forEach(x=>x.classList.remove('s'));r.classList.add('s');toast('شكراً لتقييمك');return}
+ if(e.target.closest('.logrow'))return;
+ w.classList.toggle('open');
+});
+$('#addw').onclick=()=>{if(water<8){water++;pulse=true;renderHome();pulse=false}};
+
+function renderPrefs(){
+ $('#cats').innerHTML=cats.map((c,ci)=>`<div class="cat"><h3>${c.k}<span>الحد الأدنى ${c.min} · <button class="link" data-all="${ci}">تحديد الكل</button></span></h3><div class="grid">${c.o.map(([n,e],oi)=>`<button class="opt ${sel[ci].has(oi)?'s':''}" data-c="${ci}" data-o="${oi}"><em>${e}</em>${n}</button>`).join('')}</div></div>`).join('');
+ const ok=sel.every((s,i)=>s.size===0||s.size>=cats[i].min);
+ $('#savep').disabled=!ok;
+}
+$('#cats').addEventListener('click',e=>{
+ const a=e.target.closest('[data-all]');
+ if(a){const ci=+a.dataset.all;sel[ci]=sel[ci].size===cats[ci].o.length?new Set():new Set(cats[ci].o.keys());renderPrefs();return}
+ const o=e.target.closest('[data-c]');if(!o)return;
+ const s=sel[+o.dataset.c],k=+o.dataset.o;s.has(k)?s.delete(k):s.add(k);o.classList.toggle('s',s.has(k));updateSave();
+});
+function updateSave(){$('#savep').disabled=!sel.every((s,i)=>s.size===0||s.size>=cats[i].min)}
+$('#savep').onclick=()=>toast('تم حفظ تفضيلاتك للأسبوع القادم');
+
+$('#wk').innerHTML=[1850,2010,1940,2100,1980,0,0].map(v=>`<i style="height:${v/21}%;${v?'':'background:var(--soft);height:6%'}"></i>`).join('');
+$('#addout').onclick=()=>toast('أضف اسم الطعام وقيمه الغذائية');
+$('#dl').innerHTML=[['الفطور','الجامعة','8:00 – 12:00'],['الغداء','الجامعة','12:00 – 4:00'],['العشاء','المنزل','4:00 – 8:00']].map(r=>`<div class="kv"><span>${r[0]}<br><small style="color:var(--mute)">${r[2]}</small></span><b>${r[1]}</b></div>`).join('');
+let disc=0,shown=772;
+function roll(el,to,suf){const from=shown,t0=performance.now();shown=to;(function f(t){const p=Math.min(1,(t-t0)/600);el.textContent=Math.round(from+(to-from)*(1-Math.pow(1-p,3)))+suf;if(p<1)requestAnimationFrame(f)})(t0)}
+function confetti(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const d=$('#done'),cols=['#6e7a25','#949b50','#173327','#d9d4a8'];for(let i=0;i<32;i++){const s=document.createElement('i');s.className='cf';s.style.background=cols[i%4];d.appendChild(s);const a=Math.random()*Math.PI*2,r=90+Math.random()*140;s.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${Math.cos(a)*r}px,${Math.sin(a)*r+70}px) rotate(${Math.random()*540}deg) scale(.6)`,opacity:0}],{duration:1100+Math.random()*600,delay:250,easing:'cubic-bezier(.2,.7,.3,1)',fill:'both'}).onfinish=()=>s.remove()}}
+function calc(){const t=772-disc;$('#dscrow').style.display=disc?'flex':'none';if(disc){const r=$('#dscrow');r.classList.remove('in');void r.offsetWidth;r.classList.add('in')}$('#dsc').textContent='- '+disc+' ر.س';roll($('#tot'),t,' ر.س');$('#paybtn').textContent='ادفع '+t+' ر.س'}
+$('#apply').onclick=()=>{const v=$('#code').value.trim().toUpperCase();if(v==='NUTRIO10'){disc=77;toast('تم تطبيق الخصم')}else{disc=0;toast(v?'الرمز غير صالح':'أدخل رمز الخصم')}calc();if(!disc&&v){const c=$('.codebox');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}};
+document.querySelectorAll('.pm').forEach(b=>b.onclick=()=>{document.querySelectorAll('.pm').forEach(x=>x.classList.remove('s'));b.classList.add('s')});
+$('#ar').onclick=()=>$('#ar').classList.toggle('on');
+$('#paybtn').onclick=()=>{const b=$('#paybtn');b.disabled=true;b.classList.add('load');b.textContent='جاري الدفع...';setTimeout(()=>{b.disabled=false;b.classList.remove('load');calc();$('#done').classList.add('on');confetti()},1400)};
+$('#gohome').onclick=()=>{$('#done').classList.remove('on');go('home')};
+calc();
+renderMeals();renderHome();renderPrefs();
+</script>
+</body>
+</html>
